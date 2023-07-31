@@ -1,0 +1,6 @@
+.vB_span{
+    border: 1px black solid;
+    background-color: green;
+    margin: 10px;
+    cursor: pointer;
+}

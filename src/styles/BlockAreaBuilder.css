@@ -1,0 +1,40 @@
+.bAB_blocks{
+    display: flex;
+    background-color: red;
+    flex-direction: column;
+    width: 96%;
+    border-radius: 20px;
+    margin: 1vw 1vw 0 1vw;
+}
+
+.bAB_block{
+    display: flex;
+    min-height: 30px;
+    align-items:flex-start;
+    border-bottom: 1px solid black;
+    border-radius: 20px;
+    padding-bottom: 1vw;
+    width: 100%;
+}
+
+.bAb_blockLeft{
+    margin-top: 1vw;
+    margin-left: 1vw;
+    width: 5vw;
+    display: flex;
+}
+
+.bAB_blocks_delete{
+    border-radius: 5px;
+    width: 75px;
+    height: 20px;
+    font-size: 0.7vw;
+    padding: 0;
+    text-align: center;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.bAB_block_texts{
+    width: 86vw;
+}
