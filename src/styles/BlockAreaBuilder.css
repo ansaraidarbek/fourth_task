@@ -1,17 +1,15 @@
 .bAB_blocks{
-    display: flex;
-    background-color: red;
-    flex-direction: column;
     width: 96%;
+    display: table;
     border-radius: 20px;
     margin: 1vw 1vw 0 1vw;
+    border: 1px black solid;
 }
 
 .bAB_block{
     display: flex;
     min-height: 30px;
     align-items:flex-start;
-    border-bottom: 1px solid black;
     border-radius: 20px;
     padding-bottom: 1vw;
     width: 100%;
@@ -19,9 +17,19 @@
 
 .bAb_blockLeft{
     margin-top: 1vw;
-    margin-left: 1vw;
-    width: 5vw;
+    margin-left: 1%;
+    width: 5%;
     display: flex;
+}
+
+.bAb_blockLeft>span{
+    background-color: rgb(0, 69, 0);
+    display: block;
+    padding: 1px;
+    border: 1px solid black;
+    border-radius: 5px;
+    min-width: 15px;
+    color: white;
 }
 
 .bAB_blocks_delete{
@@ -33,8 +41,10 @@
     text-align: center;
     margin-left: 10px;
     cursor: pointer;
+    background-color: white;
+    margin-top: 20px;
 }
 
 .bAB_block_texts{
-    width: 86vw;
+    width: 95%;
 }

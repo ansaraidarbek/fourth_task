@@ -1,6 +1,7 @@
 .tAB_textarea{
     margin: 1vw 1vw 0 1vw;
     padding: 8px;
+    display: block;
     /* change here the width of textarea */
     width: 96%;
     height: 12px;

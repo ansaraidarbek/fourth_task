@@ -4,14 +4,13 @@ body{
   width: 100vw;
   height: 100vh;
   position: relative;
+  overflow-x: hidden;
 }
 
-.App {
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-}
-
-.App_first{
-  display: flex;
+.App_button{
+  background-color: rgb(33, 185, 33);
+  height: 30px;
+  border-radius: 5px;
+  margin: 20px;
+  cursor: pointer;
 }

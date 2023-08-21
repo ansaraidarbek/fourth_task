@@ -1,101 +1,70 @@
 import './App.css';
-import './styles/BlockAreaBuilder.css'
-import { useState } from 'react';
-import VariableBuilder from './components/VariableBuilder';
-import TextAreaBuilder from './components/TextAreaBuilder';
+import MessageEditor from './components/MessageEditor';
+import { useState, useCallback } from 'react'
+import {mainBlock} from './components/TemplateStructure'
+import {WindowState,StateContext} from './components/StateContext';
 
+/** Done
+ *  create arrVarnames that will take string[] from localStorage
+ *  create tempalte and setTemplate as useState where initial value is obtained from local storage
+ *  create window and setWindow as useState to maintain current page view 
+ *  create function that will switch currentWinodw
+ */
 
-
+const arrVarNames = JSON.parse(localStorage.getItem("arrVarNames")|| '["firstname","lastname","company","position"]')
 function App() {
 
-  const arrFunction:string[] = [ "firstname", 'secondname', 'company', 'position']
-  const [textareaInfo, setTextareaInfo] = useState<HTMLInputElement|undefined>(undefined)
-  const [texts, setTexts] = useState(new Map())
-  // const [arr, setArr] = useState([0,1,2,3,4,5,6])
-  function varClick(varName:string){
-    if(textareaInfo !== undefined){
-      if(textareaInfo.selectionStart != null && textareaInfo.selectionEnd != null){
-        if( textareaInfo.selectionStart != null && textareaInfo.value.length <= textareaInfo!.selectionStart){
-          textareaInfo.value = textareaInfo.value+"{"+varName+"}"
-        }else{
-          const newText = textareaInfo.value.substring(0, textareaInfo.selectionStart)
-              + "{"+varName+"}"
-              + textareaInfo.value.substring(textareaInfo.selectionEnd, textareaInfo.value.length);
-          let oldPos = textareaInfo.selectionStart
-          textareaInfo.value = newText
-          let newPos = oldPos+varName.length+2
-          textareaInfo.selectionStart = newPos
-          textareaInfo.selectionEnd = newPos
-        }
-      }else{
-        console.log("somehow selectionStart or selectionEnd is null")
-      }
-    }
-    textareaInfo?.focus()
+  const [template, setTemplate] = useState(JSON.parse(localStorage.getItem("template")||'{"tree":[{"type":"text","autoselect":true,"id":1,"info":""}],"maxId":1}'))
+  const [window, setWindow] = useState("none" as WindowState)
+
+  //append arrFunction from local storage
+
+  const callbackSave = useCallback(
+    async (elem:mainBlock)=>{
+      localStorage.setItem("template", JSON.stringify(elem))
+      setTemplate(elem)
+      // await new Promise(f => setTimeout(f, 1));
+    }, []
+  )
+
+  const switchPageState = ()=>{
+      setWindow("MessageEditor")
   }
 
-  const setHistory = (elem:HTMLInputElement|undefined) =>{
-    if(elem !== textareaInfo){
-      setTextareaInfo(elem)
-    }
-  }
-
-  // const coolectTexts = (text:string, id:number)=>{
-  //   setTexts(oldtext => [...oldtext, text])
-  //   console.log(texts)
-  // }
-
-  const updateText = (text:string, id:number)=>{
-    setTexts(oldMap => oldMap.set(id, text))
-  }
-
-
-
-  const doSmth = () =>{
-    // setArr((oldArr) => oldArr.filter((_, index) => index !== oldArr.length-1))
-    // console.log(arr)
-    console.log(texts)
-  }
-
+  /**
+   *  if window is none show button which will have onclick event that will trigger change to MessageEditor view
+   *  else show messageEditor and pass window as a context
+   */
   return (
-    <div className='App'>
-      <div className='App_first'>
-        {arrFunction.map((elem) => {
-          return <VariableBuilder varName = {elem} clicked = {varClick} key = {elem} />
-        })}
-      </div>
-      {/* {arr.map((e)=>{
-        return <TextAreaBuilder key = {e} history = {setHistory} autoselect = {true} updateText= {updateText} id={e}/>
-      })} */}
-      <TextAreaBuilder history = {setHistory} autoselect = {true} updateText= {updateText} id={0}/>
-      <div className='bAB_blocks'>
-        <div className="bAB_block">
-          <div className="bAb_blockLeft">
-            <span>If</span>
-            <button className="bAB_blocks_delete">DeleteBlock</button>
-          </div>
-          <div className="bAB_block_texts">
-            <TextAreaBuilder history = {setHistory} autoselect = {true} updateText= {updateText} id={0}/>
-          </div>
-        </div>
-        <div className="bAB_block">
-          <span className="bAb_blockLeft">Then</span>
-          <div className="bAB_block_texts">
-            <TextAreaBuilder history = {setHistory} autoselect = {true} updateText= {updateText} id={0}/>
-          </div>
-        </div>
-        <div className="bAB_block">
-          <span className="bAb_blockLeft">Else</span>
-          <div className="bAB_block_texts">
-            <TextAreaBuilder history = {setHistory} autoselect = {true} updateText= {updateText} id={0}/>
-            <TextAreaBuilder history = {setHistory} autoselect = {true} updateText= {updateText} id={0}/>
-          </div>
-        </div>
-      </div>
-      <TextAreaBuilder history = {setHistory} autoselect = {false} updateText={updateText} id={1}/>
-      <button onClick={() =>doSmth()}>CheckText</button>
+    <div className="App">
+      { (window==="none") 
+        ? <button className="App_button" onClick ={()=>switchPageState()}>
+            Open Message Redactor
+          </button> 
+        : <StateContext.Provider value={{window, setWindow}}>
+            <MessageEditor 
+            arrVarNames={arrVarNames}
+            template = {template||'{"main":[{"type":"text","autoselect":true,"id":1,"info":""}],"maxId":1}'}
+            callbackSave = {callbackSave}
+            /> 
+          </StateContext.Provider>
+      }
     </div>
   );
 }
 
 export default App;
+  
+
+  // const elemements = [{"type":"text", "autoselect":true, "id":"1", "info": ""}]
+    // [{"type":"text", "autoselect":true, "id":"1", "info": ""},
+    // {"type" : "block",
+    // "id" : "2",
+    // "cond" : [
+    //           {"type":"text", "autoselect":false, "id":"2.1", "info": ""}, 
+    //           {"type":"block", "id":"2.4", "cond": [{"type":"text", "autoselect":false, "id":"2.4.1", "info": ""}], "statement1": [{"type":"text", "autoselect":false, "id":"2.4.2", "info": ""}], "statement2": [{"type":"text", "autoselect":false, "id":"2.4.3", "info": ""}]}
+    //         ],
+    // "statement1" : [{"type":"text", "autoselect":false, "id":"2.2", "info": ""},{"type":"text", "autoselect":false, "id":"2.5", "info": ""}],
+    // "statement2" : [{"type":"text", "autoselect":false, "id":"2.3", "info": ""}]},
+    // {"type":"text", "autoselect":false, "id":"3", "info": ""}
+    // ]
