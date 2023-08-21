@@ -13,4 +13,5 @@ Output
                     the message is --> ...but what is your position?...
 
 # Here is a gif that shows the behaviour of this tool
-![ezgif com-video-to-gif](https://github.com/ansaraidarbek/messageTemplate/assets/88711794/67294bdf-9e66-4e0b-9c6f-e82e46a46ede)
+![ezgif com-video-to-gif](https://github.com/ansaraidarbek/message_template/assets/88711794/bba4fd49-bf7c-4c49-aaf0-599ff378a758)
+
